@@ -1,4 +1,32 @@
 {
   "name": "md-links",
-  "version": "0.1.0"
+  "version": "0.1.0",
+  "description": "It is a tool which reads and analyzes Markdown files, then verifies the links they contain and shows some statistics.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pauladriana/LIM015-md-links.git"
+  },
+  "keywords": [
+    "javascript",
+    "node",
+    "jest"
+  ],
+  "author": "Paula Pintado <paulaadriana_08@hotmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Pauladriana/LIM015-md-links/issues"
+  },
+  "homepage": "https://github.com/Pauladriana/LIM015-md-links#readme",
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.24.2"
+  }
 }
