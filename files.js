@@ -1,64 +1,49 @@
 /* eslint-disable linebreak-style */
-const filePath = './lib'; // const path = `${__dirname}archivo.md`;
+const filePath = './lib';
 const fs = require('fs');
 const path = require('path');
 
-// Para ver si el archivo existe
 const pathExist = (route) => fs.existsSync(route);
-console.log('La ruta existe:', pathExist(filePath));
+console.log('Path exists:', pathExist(filePath));
 
-// PARA SABER SI SU RUTA ES ABSOLUTA
 const isPathAbsolute = (route) => path.isAbsolute(route);
-console.log('Es ruta absoluta:', isPathAbsolute(filePath));
+console.log('Path is absolute:', isPathAbsolute(filePath));
 
-// CONVIERTE A RUTA ABSOLUTA
 const relativeToAbsolutePath = (route) => path.resolve(route);
 console.log(relativeToAbsolutePath(filePath));
 
-// PARA SABER SI ES directorio
 const isDirectory = (route) => fs.lstatSync(route).isDirectory();
-console.log('Es un directorio:', isDirectory(filePath));
+console.log('Path is a directory:', isDirectory(filePath));
 
-// PARA SABER SI ES UN ARCHIVO
 const isFile = (route) => fs.lstatSync(route).isFile();
-console.log('Es un archivo:', isFile(filePath));
+console.log('Path is a file:', isFile(filePath));
 
-// PARA LEER EL DIRECTORIO
+const isMd = (route) => path.extname(route) === '.md';
+
 const readDir = (route) => fs.readdirSync(route);
 // console.log(readDir(relativeToAbsolutePath(filePath)));
 
+const mdPaths = [];
 function findMdFile(route) {
-  const laRuta = route;
-  if (isFile(laRuta)) {
-    console.log(laRuta, '-----> Es un archivo');
-  } else if (isDirectory(laRuta)) {
-    console.log(laRuta, '----> Es un directorio');
-    const dirFiles = readDir(laRuta);
+  const readPath = route;
+  if (isFile(readPath)) {
+    // console.log(readPath, '-----> Es un archivo');
+    if (isMd(readPath)) {
+      mdPaths.push(readPath);
+    }
+  } else if (isDirectory(readPath)) {
+    console.log(readPath, '----> Is a directory');
+    const dirFiles = readDir(readPath);
     console.log(dirFiles);
     dirFiles.forEach((elem) => {
       const pathelem = elem;
-      const newpath = path.join(laRuta, pathelem);
+      const newpath = path.join(readPath, pathelem);
       findMdFile(newpath);
     });
-    // LEER SI FILE ES UN ARCHIVO MD... LUEGO LEER EL ARCHIVO
   }
 }
 findMdFile(relativeToAbsolutePath(filePath));
-
-/* const isFile = (pathsDir, listMd) => {
-  pathsDir.forEach((elem) => {
-    const pathElem = elem;
-    if (isDir(elem)) {
-      const readElem = readDir(pathElem);
-      if (readElem.length > 0) {
-        const pathsDirElem = pathJoin(readElem, pathElem);
-        isFile(pathsDirElem, listMd);
-      }
-    } else if (pathExtname) {
-      listMd.push(elem);
-    }
-  });
-}; */
+console.log('The MD files are:', mdPaths);
 
 // LEYENDO EL ARCHIVO MD
 /* const fileLinks = [];
