@@ -1,11 +1,35 @@
 /* eslint-disable linebreak-style */
-/* const funcionesMatematicas = require('./funciones');
+/* eslint-disable no-lonely-if */
+/* eslint-disable prefer-promise-reject-errors */
+const api = require('./api');
 
-console.log(funcionesMatematicas.nombre);
-console.log(funcionesMatematicas.suma(4, 5));
-console.log(funcionesMatematicas.resta(10, 9));
-console.log(funcionesMatematicas.multiplica(3, 2)); */
+const mdLinks = (path, option) => new Promise((resolve, reject) => {
+  if (!(api.pathExist(path))) {
+    reject('The path does not exist');
+  } else {
+    const absolutePath = api.relativeToAbsolutePath(path);
+    const searchPath = api.findMdFile(absolutePath); // Retorna el array cona archivos md
+    console.log(searchPath, 12);
+    if (!searchPath) {
+      reject('The path does not have markdown files');
+    } else {
+      const getLinks = api.readMdLinks(searchPath); // Retorna array con objeto de links -3 prop-
+      console.log(getLinks, 17);
+      if (!getLinks) {
+        reject('The file does not contain mdLinks');
+      } else if (option && option.validate === true) {
+        const validateLinks = getLinks.map((link) => {
+          const linkObj = api.fetchLink(link);
+          return linkObj;
+        });
+        resolve(Promise.all(validateLinks));
+      } else {
+        resolve(getLinks);
+      }
+    }
+  }
+});
 
-const path = require('path');
+console.log(mdLinks('lib/archivo2.md', { validate: true }));
 
-console.log(path.isAbsolute('./lib/archivo.md'));
+module.exports = mdLinks;
