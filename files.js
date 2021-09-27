@@ -1,27 +1,30 @@
 /* eslint-disable linebreak-style */
-const filePath = './lib';
+// const filePath = './lib';
 const fs = require('fs');
 const path = require('path');
+const fetch = require('node-fetch');
 
 const pathExist = (route) => fs.existsSync(route);
-console.log('Path exists:', pathExist(filePath));
+// console.log('Path exists:', pathExist(filePath));
 
 const isPathAbsolute = (route) => path.isAbsolute(route);
-console.log('Path is absolute:', isPathAbsolute(filePath));
+// console.log('Path is absolute:', isPathAbsolute(filePath));
 
 const relativeToAbsolutePath = (route) => path.resolve(route);
-console.log(relativeToAbsolutePath(filePath));
+// console.log(relativeToAbsolutePath(filePath));
 
 const isDirectory = (route) => fs.lstatSync(route).isDirectory();
-console.log('Path is a directory:', isDirectory(filePath));
+// console.log('Path is a directory:', isDirectory(filePath));
 
 const isFile = (route) => fs.lstatSync(route).isFile();
-console.log('Path is a file:', isFile(filePath));
+// console.log('Path is a file:', isFile(filePath));
 
 const isMd = (route) => path.extname(route) === '.md';
 
 const readDir = (route) => fs.readdirSync(route);
 // console.log(readDir(relativeToAbsolutePath(filePath)));
+const readFile = (route) => fs.readFileSync(route, 'utf8');
+// console.log(readFile(relativeToAbsolutePath('lib/anotherLib/Lib5/archivo4.md')), 26);
 
 const mdPaths = [];
 function findMdFile(route) {
@@ -32,18 +35,19 @@ function findMdFile(route) {
       mdPaths.push(readPath);
     }
   } else if (isDirectory(readPath)) {
-    console.log(readPath, '----> Is a directory');
+    // console.log(readPath, '----> Is a directory');
     const dirFiles = readDir(readPath);
-    console.log(dirFiles);
+    // console.log(dirFiles);
     dirFiles.forEach((elem) => {
       const pathelem = elem;
       const newpath = path.join(readPath, pathelem);
       findMdFile(newpath);
     });
   }
+  return mdPaths;
 }
-findMdFile(relativeToAbsolutePath(filePath));
-console.log('The MD files are:', mdPaths);
+// console.log('The MD files are:', findMdFile(relativeToAbsolutePath(filePath)));
+// [gatos](https://www.ecosia.org/images?q=gatos).
 
 const regexToMatch = {
   mdLinks: new RegExp(/\[([\w\s\d./?=#&_%~,.:-]+)\]\(((?:\/|https?:\/\/)[\w\d./?=#&_%~,.:-]+)\)/mg),
@@ -52,31 +56,37 @@ const regexToMatch = {
 };
 
 // LEYENDO EL ARCHIVO MD
-const fileLinks = [];
 const readMdLinks = (arrMdFiles) => {
+  const fileLinks = [];
   arrMdFiles.forEach((md) => {
-    fs.readFile(md, 'utf-8', (error, fileContent) => {
-      if (!error) {
-        console.log(fileContent, 60);
-        const fileMdContent = fileContent.match(regexToMatch.mdLinks);
-        if (fileMdContent) {
-          fileMdContent.forEach((link) => {
-            const hrefLink = link.match(regexToMatch.link).join().slice(1, -1);
-            const textLink = link.match(regexToMatch.text).join().slice(1, -1);
-            const objLinks = {
-              href: hrefLink,
-              text: textLink,
-              file: md,
-            };
-            fileLinks.push(objLinks);
-          });
-          console.log(fileLinks, 70);
-        }
-      } else {
-        console.log(error, 65);
-      }
-    });
+    const fileMdContent = readFile(md).match(regexToMatch.mdLinks);
+    if (fileMdContent) {
+      fileMdContent.forEach((link) => {
+        const hrefLink = link.match(regexToMatch.link).join().slice(1, -1);
+        const textLink = link.match(regexToMatch.text).join().slice(1, -1);
+        const objLinks = {
+          href: hrefLink,
+          text: textLink,
+          file: md,
+        };
+        fileLinks.push(objLinks);
+      });
+    }
   });
+  return fileLinks;
+};
+// console.log(readMdLinks(mdPaths), 81);
+
+module.exports = {
+  pathExist,
+  isPathAbsolute,
+  relativeToAbsolutePath,
+  isDirectory,
+  isFile,
+  isMd,
+  readDir,
+  findMdFile,
+  readMdLinks,
 };
 
-readMdLinks(mdPaths);
+fetch('https://api.github.com/users/mitocode21').then((res) => res.json()).then((json) => console.log(json));
