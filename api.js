@@ -7,9 +7,6 @@ const fetch = require('node-fetch');
 const pathExist = (route) => fs.existsSync(route);
 // console.log('Path exists:', pathExist(filePath));
 
-const isPathAbsolute = (route) => path.isAbsolute(route);
-// console.log('Path is absolute:', isPathAbsolute(filePath));
-
 const relativeToAbsolutePath = (route) => path.resolve(route);
 // console.log(relativeToAbsolutePath(filePath));
 
@@ -25,7 +22,6 @@ const readDir = (route) => fs.readdirSync(route);
 // console.log(readDir(relativeToAbsolutePath(filePath)));
 const readFile = (route) => fs.readFileSync(route, 'utf8');
 // console.log(readFile(relativeToAbsolutePath('lib/anotherLib/Lib5/archivo4.md')), 26);
-
 const mdPaths = [];
 function findMdFile(route) {
   const readPath = route;
@@ -66,7 +62,7 @@ const readMdLinks = (arrMdFiles) => {
         const textLink = link.match(regexToMatch.text).join().slice(1, -1);
         const objLinks = {
           href: hrefLink,
-          text: textLink,
+          text: textLink.substring(0, 50),
           file: md,
         };
         fileLinks.push(objLinks);
@@ -76,17 +72,33 @@ const readMdLinks = (arrMdFiles) => {
   return fileLinks;
 };
 // console.log(readMdLinks(mdPaths), 81);
+/* const prueba = {
+  href: 'https://www.youtube.com/watch?v=8JYBwCaZviE&list=PL_wRgp7nihybJkFgDxd-LBZgmSIVdy3rd&index=8',
+  text: 'gatos',
+  file: 'C:\\Users\\Paula\\Documents\\GitHub\\LIM015-md-links\\lib\\anotherLib\\Lib5\\archivo4.md',
+}; */
+
+const fetchLink = (link) => fetch(link.href)
+  .then((res) => {
+    const statusText = res.status === 200 ? 'Ok' : 'Fail';
+    return {
+      ...link,
+      status: res.status,
+      ok: statusText,
+    };
+  })
+  .catch(() => ({
+    ...link,
+    status: 'Error',
+    ok: 'Fail',
+  }));
+
+// console.log(fetchLink(prueba).then((res) => console.log(res)).catch((err) => console.log(err)));
 
 module.exports = {
   pathExist,
-  isPathAbsolute,
   relativeToAbsolutePath,
-  isDirectory,
-  isFile,
-  isMd,
-  readDir,
   findMdFile,
   readMdLinks,
+  fetchLink,
 };
-
-fetch('https://api.github.com/users/mitocode21').then((res) => res.json()).then((json) => console.log(json));
