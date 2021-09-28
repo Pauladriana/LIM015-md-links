@@ -62,7 +62,7 @@ const readMdLinks = (arrMdFiles) => {
         const textLink = link.match(regexToMatch.text).join().slice(1, -1);
         const objLinks = {
           href: hrefLink,
-          text: textLink,
+          text: textLink.substring(0, 50),
           file: md,
         };
         fileLinks.push(objLinks);
@@ -72,6 +72,11 @@ const readMdLinks = (arrMdFiles) => {
   return fileLinks;
 };
 // console.log(readMdLinks(mdPaths), 81);
+/* const prueba = {
+  href: 'https://www.youtube.com/watch?v=8JYBwCaZviE&list=PL_wRgp7nihybJkFgDxd-LBZgmSIVdy3rd&index=8',
+  text: 'gatos',
+  file: 'C:\\Users\\Paula\\Documents\\GitHub\\LIM015-md-links\\lib\\anotherLib\\Lib5\\archivo4.md',
+}; */
 
 const fetchLink = (link) => fetch(link.href)
   .then((res) => {
@@ -79,14 +84,16 @@ const fetchLink = (link) => fetch(link.href)
     return {
       ...link,
       status: res.status,
-      text: statusText,
+      ok: statusText,
     };
   })
   .catch(() => ({
     ...link,
     status: 'Error',
-    text: 'Fail',
+    ok: 'Fail',
   }));
+
+// console.log(fetchLink(prueba).then((res) => console.log(res)).catch((err) => console.log(err)));
 
 module.exports = {
   pathExist,
