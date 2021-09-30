@@ -22,7 +22,7 @@ const mdLinks = (path, option) => new Promise((resolve, reject) => {
           const linkObj = api.fetchLink(link);
           return linkObj;
         });
-        resolve(Promise.all(validateLinks));
+        resolve(Promise.all(validateLinks)); // RETORNA ARRAY CON OBJ DE 5 PROP
       } else {
         resolve(getLinks);
       }
@@ -30,6 +30,6 @@ const mdLinks = (path, option) => new Promise((resolve, reject) => {
   }
 });
 
-console.log(mdLinks('./lib/archivo2.md', { validate: true }).then((res) => console.log(res)).catch((err) => console.log(err)));
+console.log(mdLinks('./lib/').then((res) => console.log(res)).catch((err) => console.log(err)));
 
 module.exports = mdLinks;

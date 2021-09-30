@@ -1,39 +1,31 @@
 /* eslint-disable linebreak-style */
-// const filePath = './lib';
 const fs = require('fs');
 const path = require('path');
 const fetch = require('node-fetch');
 
 const pathExist = (route) => fs.existsSync(route);
-// console.log('Path exists:', pathExist(filePath));
 
 const relativeToAbsolutePath = (route) => path.resolve(route);
-// console.log(relativeToAbsolutePath(filePath));
 
 const isDirectory = (route) => fs.lstatSync(route).isDirectory();
-// console.log('Path is a directory:', isDirectory(filePath));
 
 const isFile = (route) => fs.lstatSync(route).isFile();
-// console.log('Path is a file:', isFile(filePath));
 
 const isMd = (route) => path.extname(route) === '.md';
 
 const readDir = (route) => fs.readdirSync(route);
-// console.log(readDir(relativeToAbsolutePath(filePath)));
+
 const readFile = (route) => fs.readFileSync(route, 'utf8');
-// console.log(readFile(relativeToAbsolutePath('lib/anotherLib/Lib5/archivo4.md')), 26);
+
 const mdPaths = [];
 function findMdFile(route) {
   const readPath = route;
   if (isFile(readPath)) {
-    // console.log(readPath, '-----> Es un archivo');
     if (isMd(readPath)) {
       mdPaths.push(readPath);
     }
   } else if (isDirectory(readPath)) {
-    // console.log(readPath, '----> Is a directory');
     const dirFiles = readDir(readPath);
-    // console.log(dirFiles);
     dirFiles.forEach((elem) => {
       const pathelem = elem;
       const newpath = path.join(readPath, pathelem);
@@ -42,16 +34,12 @@ function findMdFile(route) {
   }
   return mdPaths;
 }
-// console.log('The MD files are:', findMdFile(relativeToAbsolutePath(filePath)));
-// [gatos](https://www.ecosia.org/images?q=gatos).
 
 const regexToMatch = {
   mdLinks: new RegExp(/\[([\w\s\d./?=#&_%~,.:-]+)\]\(((?:\/|https?:\/\/)[\w\d./?=#&_%~,.:-]+)\)/mg),
   link: new RegExp(/\(((?:\/|https?:\/\/)[\w\d./?=#&_%~,.:-]+)\)/mg),
   text: new RegExp(/\[([\w\s\d./?=#&_%~,.:-]+)\]/g),
 };
-
-// LEYENDO EL ARCHIVO MD
 const readMdLinks = (arrMdFiles) => {
   const fileLinks = [];
   arrMdFiles.forEach((md) => {
@@ -71,12 +59,6 @@ const readMdLinks = (arrMdFiles) => {
   });
   return fileLinks;
 };
-// console.log(readMdLinks(mdPaths), 81);
-/* const prueba = {
-  href: 'https://www.youtube.com/watch?v=8JYBwCaZviE&list=PL_wRgp7nihybJkFgDxd-LBZgmSIVdy3rd&index=8',
-  text: 'gatos',
-  file: 'C:\\Users\\Paula\\Documents\\GitHub\\LIM015-md-links\\lib\\anotherLib\\Lib5\\archivo4.md',
-}; */
 
 const fetchLink = (link) => fetch(link.href)
   .then((res) => {
@@ -92,8 +74,6 @@ const fetchLink = (link) => fetch(link.href)
     status: 'Error',
     ok: 'Fail',
   }));
-
-// console.log(fetchLink(prueba).then((res) => console.log(res)).catch((err) => console.log(err)));
 
 module.exports = {
   pathExist,
