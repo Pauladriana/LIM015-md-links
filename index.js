@@ -30,6 +30,7 @@ const mdLinks = (path, option) => new Promise((resolve, reject) => {
   }
 });
 
-console.log(mdLinks('./lib/archivo2.md', { validate: true }).then((res) => console.log(res)).catch((err) => console.log(err)));
+/* console.log(mdLinks('./lib/anotherLib/', { validate: true })
+.then((res) => console.log(res)).catch((err) => console.log(err))); */
 
 module.exports = mdLinks;
