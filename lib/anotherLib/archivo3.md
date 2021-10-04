@@ -8,7 +8,7 @@ holitas, soy el tercero.
 
 ## 1. Preámbulo
 
-[Markdown](https:/es.wikipedia.org/wiki/Markdown) es un lenguaje de marcado
+[Markdown](https://es.wikipedia.org/wiki/Markdown), es un lenguaje de marcado
 ligero muy popular entre developers.
 
 Dentro de una comunidad de código abierto, nos han propuesto crear una

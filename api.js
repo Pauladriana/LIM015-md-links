@@ -48,7 +48,7 @@ function findMdFile(route) {
 const regexToMatch = {
   mdLinks: new RegExp(/\[([\w\s\d./?=#&_%~,.:-]+)\]\(((?:\/|https?:\/\/)[\w\d./?=#&_%~,.:-]+)\)/mg),
   link: new RegExp(/\(((?:\/|https?:\/\/)[\w\d./?=#&_%~,.:-]+)\)/mg),
-  text: new RegExp(/\[([\w\s\d./?=#&_%~,.:-]+)\]/g),
+  text: new RegExp(/\[([\w\s\d./?=#&_%~,.:-]+)\]/mg),
 };
 
 // LEYENDO EL ARCHIVO MD
