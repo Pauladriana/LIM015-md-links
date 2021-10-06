@@ -3,12 +3,16 @@
     "node": true,
     "jest/globals": true
   },
+  "globals": {
+    "_": "readonly"
+  },
   "parserOptions": {
     "ecmaVersion": 8
   },
   "extends": ["plugin:jest/recommended"],
   "plugins": ["jest"],
   "rules": {
+    "linebreak-style": 0,
     "jest/no-disabled-tests": "warn",
     "jest/no-focused-tests": "error",
     "jest/no-identical-title": "error",
