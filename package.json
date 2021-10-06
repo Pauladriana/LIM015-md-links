@@ -20,6 +20,9 @@
   ],
   "author": "Paula Pintado <paulaadriana_08@hotmail.com>",
   "license": "ISC",
+  "bin": {
+    "md-links": "./cli.js"
+  },
   "bugs": {
     "url": "https://github.com/Pauladriana/LIM015-md-links/issues"
   },
