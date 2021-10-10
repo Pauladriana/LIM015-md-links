@@ -12,6 +12,11 @@ WORKFLOW CLI
 
 ![Workflow CLI (1)](https://user-images.githubusercontent.com/85115054/133481089-f1e974f6-7f51-4ed0-b179-0808b68fe4cb.png)
 
+Instalación y Uso
+
+$ npm i pau-mdlinks-lab
+
+Para acceder se debe importar con require('pau-mdlinks-lab').
 
 Ejemplos:
 mdLinks <path-to-file> [options]
